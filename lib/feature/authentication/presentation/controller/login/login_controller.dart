@@ -1,10 +1,7 @@
 import 'package:dut_packing_system/utils/extension/form_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:get/get.dart';
-
 import '../../../../../base/presentation/base_controller.dart';
-import '../../../../../utils/config/app_navigation.dart';
 
 class LoginController extends BaseController {
   // LoginController(this._loginWithEmailUseCase);
