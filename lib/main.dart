@@ -5,11 +5,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get_navigation/src/root/get_cupertino_app.dart';
 import 'package:get/route_manager.dart';
+import 'main.reflectable.dart';
 import 'utils/config/app_binding.dart';
 import 'utils/config/app_route.dart';
 
 void main() async {
   _initApp();
+  initializeReflectable();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }

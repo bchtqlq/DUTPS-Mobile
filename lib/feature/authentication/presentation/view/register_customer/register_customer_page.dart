@@ -40,7 +40,7 @@ class RegisterCustomerPage extends GetView<RegisterCustomerController> {
                           const SizedBox(height: 20),
                           CommonTextField(
                             formKey: controller.formKey,
-                            type: FormFieldType.phone,
+                            type: FormFieldType.username,
                             maxLength: 13,
                             controller: controller.phoneTextEditingController,
                             onTap: controller.hideErrorMessage,

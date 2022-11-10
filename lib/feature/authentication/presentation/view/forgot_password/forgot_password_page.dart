@@ -37,7 +37,7 @@ class ForgotPasswordPage extends GetView<ForgotPasswordController> {
                           const SizedBox(height: 20),
                           CommonTextField(
                             formKey: controller.formKey,
-                            type: FormFieldType.phone,
+                            type: FormFieldType.username,
                             controller: controller.phoneTextEditingController,
                             onTap: controller.hideErrorMessage,
                             onChanged: (_) {

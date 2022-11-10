@@ -36,7 +36,7 @@ class DemoPage extends GetWidget<DemoController> {
                   const SizedBox(height: 20),
                   CommonTextField(
                     formKey: controller.formKey,
-                    type: FormFieldType.phone,
+                    type: FormFieldType.username,
                     controller: controller.phomeTextEditingController,
                     onTap: null,
                     onChanged: (_) {},

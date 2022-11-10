@@ -54,6 +54,9 @@ dependencies:
   # Json serializable & model
   dart_json_mapper: ^2.2.5+1
 
+  #Storage
+  shared_preferences: ^2.0.15
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

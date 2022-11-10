@@ -5,7 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 typedef MyFormFieldState = FormBuilderFieldState<FormBuilderField<dynamic>, dynamic>;
 
 enum FormFieldType {
-  phone,
+  username,
   password,
   confirmPassword,
   memo,
@@ -14,8 +14,8 @@ enum FormFieldType {
 extension FormFieldTypeExtension on FormFieldType {
   String get labelText {
     switch (this) {
-      case FormFieldType.phone:
-        return 'Số điện thoại';
+      case FormFieldType.username:
+        return 'Username';
       case FormFieldType.password:
         return 'Mật khẩu';
       case FormFieldType.confirmPassword:
@@ -29,8 +29,8 @@ extension FormFieldTypeExtension on FormFieldType {
 
   String get hintText {
     switch (this) {
-      case FormFieldType.phone:
-        return '099-9999-999';
+      case FormFieldType.username:
+        return '';
       default:
         return '';
     }
@@ -38,8 +38,8 @@ extension FormFieldTypeExtension on FormFieldType {
 
   TextInputType get keyboardType {
     switch (this) {
-      case FormFieldType.phone:
-        return TextInputType.phone;
+      case FormFieldType.username:
+        return TextInputType.name;
       case FormFieldType.memo:
         return TextInputType.multiline;
       default:
@@ -58,18 +58,9 @@ extension FormFieldTypeExtension on FormFieldType {
   FormFieldValidator<String?>? validator() {
     List<FormFieldValidator<String?>> validators = [];
     switch (this) {
-      case FormFieldType.phone:
+      case FormFieldType.username:
         validators = [
-          FormBuilderValidators.required(errorText: 'Không được để trống số điện thoại'),
-          FormBuilderValidators.integer(errorText: 'Số điện thoại bao gồm các chữ số'),
-          FormBuilderValidators.compose(
-            [
-              (val) {
-                final validNumber = RegExp(r'^[+|0]{1}[0-9]{9,11}$');
-                return validNumber.hasMatch(val.toString().trim()) ? null : "Vui lòng nhập vào số điện thoại của bạn";
-              },
-            ],
-          ),
+          FormBuilderValidators.required(errorText: 'Không được để trống username'),
         ];
         break;
       case FormFieldType.password:
