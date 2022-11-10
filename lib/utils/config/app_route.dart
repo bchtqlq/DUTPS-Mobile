@@ -7,8 +7,6 @@ import '../../feature/authentication/presentation/view/forgot_password/forgot_pa
 import '../../feature/authentication/presentation/view/forgot_password/forgot_password_page.dart';
 import '../../feature/authentication/presentation/view/login/login_bindings.dart';
 import '../../feature/authentication/presentation/view/login/login_page.dart';
-import '../../feature/authentication/presentation/view/register_customer/confirm_register_customer/confirm_register_customer_bindings.dart';
-import '../../feature/authentication/presentation/view/register_customer/confirm_register_customer/confirm_register_customer_page.dart';
 import '../../feature/authentication/presentation/view/register_customer/register_customer_bindings.dart';
 import '../../feature/authentication/presentation/view/register_customer/register_customer_page.dart';
 import '../../feature/authentication/presentation/view/root/root_bindings.dart';
@@ -67,12 +65,6 @@ class AppRoute {
       name: registerCustomer,
       page: RegisterCustomerPage.new,
       binding: RegisterCustomerBindings(),
-      transition: Transition.cupertino,
-    ),
-    GetPage(
-      name: confirmRegisterCustomer,
-      page: ConfirmRegisterCustomerPage.new,
-      binding: ConfirmRegisterCustomerBindings(),
       transition: Transition.cupertino,
     ),
   ];
