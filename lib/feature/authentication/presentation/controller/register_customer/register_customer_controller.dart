@@ -50,7 +50,7 @@ class RegisterCustomerController extends BaseController {
   void onTapRegister() {
     try {
       final fbs = formKey.formBuilderState!;
-      final phoneField = FormFieldType.phone.field(fbs);
+      final phoneField = FormFieldType.username.field(fbs);
       final passwordField = FormFieldType.password.field(fbs);
       final confirmPassword = FormFieldType.confirmPassword.field(fbs);
       [

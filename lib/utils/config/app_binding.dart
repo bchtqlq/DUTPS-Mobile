@@ -4,7 +4,12 @@ import 'package:get/instance_manager.dart';
 import '../../../feature/authentication/data/repositories_imp/user_repo_impl.dart';
 import '../../../feature/authentication/domain/repositoties/user_repo.dart';
 import '../../base/data/remote/builder/dio_builder.dart';
+import '../../feature/authentication/data/providers/remote/auth_api.dart';
 import '../../feature/authentication/data/providers/remote/user_api.dart';
+import '../../feature/authentication/data/repositories_imp/auth_repo_impl.dart';
+import '../../feature/authentication/domain/repositoties/auth_repo.dart';
+import '../services/storage_service.dart';
+import '../services/storage_service_impl.dart';
 import 'app_config.dart';
 
 class AppBinding extends Bindings {
@@ -12,6 +17,7 @@ class AppBinding extends Bindings {
   void dependencies() {
     injectNetworkProvider();
     injectRepository();
+    injectService();
   }
 
   void injectNetworkProvider() {
@@ -25,9 +31,18 @@ class AppBinding extends Bindings {
       () => UserAPI(Get.find<DioBuilder>()),
       fenix: true,
     );
+    Get.lazyPut(
+      () => AuthAPI(Get.find<DioBuilder>()),
+      fenix: true,
+    );
   }
 
   void injectRepository() {
     Get.put<UserRepo>(UserRepoImpl());
+    Get.put<AuthRepo>(AuthRepoImpl());
+  }
+
+  void injectService() {
+    Get.put<StorageService>(StorageServiceImpl());
   }
 }
