@@ -84,9 +84,8 @@ class LoginController extends BaseController {
 
             showOkAlertDialog(
                 context: context,
-                message:
-                    'phone: ${account.username}, token: ${account.accessToken}');
-
+                title: "Đăng nhập thành công",
+                message: 'phone: ${account.username}, token: ${account.accessToken}');
             // N.toPatientList();
           },
           onError: (e) {

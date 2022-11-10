@@ -1,18 +1,29 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dio/dio.dart';
+import 'package:dut_packing_system/feature/authentication/data/providers/remote/request/register_request.dart';
+import 'package:dut_packing_system/feature/authentication/domain/usecases/register_usecase.dart';
 import 'package:dut_packing_system/utils/extension/form_builder.dart';
+import 'package:dut_packing_system/utils/services/storage_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import '../../../../../base/domain/base_state.dart';
 import '../../../../../base/presentation/base_controller.dart';
-import '../../../../../utils/config/app_navigation.dart';
 
 class RegisterCustomerController extends BaseController {
-  final phoneTextEditingController = TextEditingController();
+  RegisterCustomerController(this._registerUsecase, this._storageService);
+
+  final RegisterUsecase _registerUsecase;
+  final StorageService _storageService;
+
+  final usernameTextEditingController = TextEditingController();
+  final emailTextEditingController = TextEditingController();
   final passwordTextEditingController = TextEditingController();
   final confirmPasswordTextEditingController = TextEditingController();
   final formKey = GlobalKey<FormBuilderState>();
   final registerState = BaseState();
 
-  String get _phone => phoneTextEditingController.text;
+  String get _email => emailTextEditingController.text;
+  String get _username => usernameTextEditingController.text;
   String get _password => passwordTextEditingController.text;
   String get _confirmPassword => confirmPasswordTextEditingController.text;
 
@@ -24,7 +35,8 @@ class RegisterCustomerController extends BaseController {
 
   @override
   void onClose() {
-    phoneTextEditingController.dispose();
+    usernameTextEditingController.dispose();
+    emailTextEditingController.dispose();
     passwordTextEditingController.dispose();
     confirmPasswordTextEditingController.dispose();
     super.onClose();
@@ -43,18 +55,19 @@ class RegisterCustomerController extends BaseController {
   }
 
   void updateRegisterButtonState() {
-    isDisableButton.value =
-        _phone.isEmpty || _password.isEmpty || _confirmPassword.isEmpty;
+    isDisableButton.value = _username.isEmpty || _password.isEmpty || _confirmPassword.isEmpty || _email.isEmpty;
   }
 
-  void onTapRegister() {
+  void onTapRegister(BuildContext context) {
     try {
       final fbs = formKey.formBuilderState!;
-      final phoneField = FormFieldType.username.field(fbs);
+      final userNameField = FormFieldType.username.field(fbs);
       final passwordField = FormFieldType.password.field(fbs);
       final confirmPassword = FormFieldType.confirmPassword.field(fbs);
+      final emailField = FormFieldType.email.field(fbs);
       [
-        phoneField,
+        userNameField,
+        emailField,
         passwordField,
         confirmPassword,
       ].validateFormFields();
@@ -64,8 +77,46 @@ class RegisterCustomerController extends BaseController {
       }
 
       if (registerState.isLoading) return;
-      // Test UI
-      N.toConfirmRegisterCustomer();
+      _registerUsecase.execute(
+        observer: Observer(
+          onSubscribe: () {
+            registerState.onLoading();
+            ignoringPointer.value = true;
+            hideErrorMessage();
+          },
+          onSuccess: (account) {
+            registerState.onSuccess();
+            ignoringPointer.value = false;
+
+            _storageService.setToken(account.accessToken ?? '');
+            showOkAlertDialog(
+              context: context,
+              title: "Đăng ký thành công",
+              message: 'phone: ${account.username}, token: ${account.accessToken}',
+            );
+          },
+          onError: (e) {
+            if (e is DioError) {
+              if (e.response != null) {
+                _showToastMessage(e.response!.data['message'].toString());
+              } else {
+                _showToastMessage(e.message);
+              }
+            }
+            if (kDebugMode) {
+              print(e.toString());
+            }
+            ignoringPointer.value = false;
+            registerState.onSuccess();
+          },
+        ),
+        input: RegisterRequest(
+          _username.trim(),
+          _password.trim(),
+          _email.trim(),
+          _confirmPassword.trim(),
+        ),
+      );
     } on Exception catch (e) {
       isDisableButton.value = true;
     }

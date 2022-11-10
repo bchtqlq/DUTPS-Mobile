@@ -8,6 +8,7 @@ enum FormFieldType {
   username,
   password,
   confirmPassword,
+  email,
   memo,
 }
 
@@ -15,7 +16,9 @@ extension FormFieldTypeExtension on FormFieldType {
   String get labelText {
     switch (this) {
       case FormFieldType.username:
-        return 'Username';
+        return 'Tài khoản';
+      case FormFieldType.email:
+        return 'E-mail';
       case FormFieldType.password:
         return 'Mật khẩu';
       case FormFieldType.confirmPassword:
@@ -29,6 +32,8 @@ extension FormFieldTypeExtension on FormFieldType {
 
   String get hintText {
     switch (this) {
+      case FormFieldType.email:
+        return 'NguyenVanA@gmail.com';
       case FormFieldType.username:
         return '';
       default:
@@ -60,19 +65,26 @@ extension FormFieldTypeExtension on FormFieldType {
     switch (this) {
       case FormFieldType.username:
         validators = [
-          FormBuilderValidators.required(errorText: 'Không được để trống username'),
+          FormBuilderValidators.required(errorText: 'Không được để trống tên tài khoản'),
+        ];
+        break;
+
+      case FormFieldType.email:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống e-mail'),
+          FormBuilderValidators.email(errorText: 'Vui lòng nhập đúng định dạng e-mail'),
         ];
         break;
       case FormFieldType.password:
         validators = [
           FormBuilderValidators.required(errorText: 'Không được để trống mật khẩu'),
-          FormBuilderValidators.minLength(8, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
+          FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
         ];
         break;
       case FormFieldType.confirmPassword:
         validators = [
           FormBuilderValidators.required(errorText: 'Không được để trống mật khẩu xác nhận'),
-          FormBuilderValidators.minLength(8, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
+          FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
         ];
         break;
       case FormFieldType.memo:
