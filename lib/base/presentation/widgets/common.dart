@@ -133,39 +133,32 @@ Widget commonTextField(
                 errorMaxLines: 2,
                 isDense: true,
                 labelText: type.labelText,
-                labelStyle:
-                    const TextStyle(fontSize: 11, color: ColorName.gray838),
+                labelStyle: const TextStyle(fontSize: 11, color: ColorName.gray838),
                 alignLabelWithHint: true,
                 filled: true,
                 fillColor: hasFocus ? ColorName.whiteFff : ColorName.grayF8f,
                 hintText: type.hintText,
                 hintStyle: AppTextStyle.w400s13(ColorName.grayC7c),
                 errorStyle: AppTextStyle.w400s13(ColorName.redFf3, height: 0.7),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 13, vertical: 16),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 13, vertical: 16),
                 enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.gray838, width: 0.5),
+                  borderSide: const BorderSide(color: ColorName.gray838, width: 0.5),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.primaryColor, width: 1),
+                  borderSide: const BorderSide(color: ColorName.primaryColor, width: 1),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.redFf3, width: 1),
+                  borderSide: const BorderSide(color: ColorName.redFf3, width: 1),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 errorBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.redFf3, width: 1),
+                  borderSide: const BorderSide(color: ColorName.redFf3, width: 1),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 border: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.gray838, width: 0.5),
+                  borderSide: const BorderSide(color: ColorName.gray838, width: 0.5),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 suffixIcon: suffixIcon == null
@@ -178,40 +171,36 @@ Widget commonTextField(
                       ),
               ),
               validator: type.validator(),
-              onTap:
-                  formKey?.formBuilderState == null || type.validator() == null
-                      ? null
-                      : () {
-                          final text = ctl.text;
-                          final field = type.field(formKey!.formBuilderState!);
-                          if (type.validator() != null) {
-                            field.validate();
-                            field.reset();
-                            ctl.value = ctl.value.copyWith(
-                              text: text,
-                              selection:
-                                  TextSelection.collapsed(offset: text.length),
-                            );
-                          }
-                          onTap?.call();
-                        },
-              onChanged:
-                  formKey?.formBuilderState == null || type.validator() == null
-                      ? null
-                      : (v) {
-                          final text = ctl.text;
-                          final field = type.field(formKey!.formBuilderState!);
-                          if (type.validator() != null && field.hasError) {
-                            field.validate();
-                            field.reset();
-                            ctl.value = ctl.value.copyWith(
-                              text: text,
-                              selection:
-                                  TextSelection.collapsed(offset: text.length),
-                            );
-                          }
-                          onChanged?.call(v);
-                        },
+              onTap: formKey?.formBuilderState == null || type.validator() == null
+                  ? null
+                  : () {
+                      final text = ctl.text;
+                      final field = type.field(formKey!.formBuilderState!);
+                      if (type.validator() != null) {
+                        field.validate();
+                        field.reset();
+                        ctl.value = ctl.value.copyWith(
+                          text: text,
+                          selection: TextSelection.collapsed(offset: text.length),
+                        );
+                      }
+                      onTap?.call();
+                    },
+              onChanged: formKey?.formBuilderState == null || type.validator() == null
+                  ? null
+                  : (v) {
+                      final text = ctl.text;
+                      final field = type.field(formKey!.formBuilderState!);
+                      if (type.validator() != null && field.hasError) {
+                        field.validate();
+                        field.reset();
+                        ctl.value = ctl.value.copyWith(
+                          text: text,
+                          selection: TextSelection.collapsed(offset: text.length),
+                        );
+                      }
+                      onChanged?.call(v);
+                    },
               onSubmitted: onSubmitted ??
                   (_) {
                     FocusScope.of(context).nextFocus();
