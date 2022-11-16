@@ -1,6 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:dut_packing_system/feature/authentication/data/providers/remote/request/username_password_request.dart';
+import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
+import 'package:dut_packing_system/feature/customer/domain/usecases/get_customer_info_usecase.dart';
+import 'package:dut_packing_system/utils/config/app_navigation.dart';
 import 'package:dut_packing_system/utils/extension/form_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,10 +14,11 @@ import '../../../../../utils/services/storage_service.dart';
 import '../../../domain/usecases/login_usecase.dart';
 
 class LoginController extends BaseController {
-  LoginController(this._loginUsecase, this._storageService);
+  LoginController(this._loginUsecase, this._storageService, this._getCustomerInfoUsecase);
 
   final LoginUsecase _loginUsecase;
   final StorageService _storageService;
+  final GetCustomerInfoUsecase _getCustomerInfoUsecase;
 
   final usernameTextEditingController = TextEditingController();
   final passwordTextEditingController = TextEditingController();
@@ -33,8 +37,8 @@ class LoginController extends BaseController {
   void onInit() {
     super.onInit();
     if (kDebugMode) {
-      usernameTextEditingController.text = 'admin';
-      passwordTextEditingController.text = 'Pa\$\$w0rd';
+      usernameTextEditingController.text = 'quylt123';
+      passwordTextEditingController.text = '123123';
     }
   }
 
@@ -79,14 +83,40 @@ class LoginController extends BaseController {
             loginState.onSuccess();
             ignoringPointer.value = false;
 
-            _storageService.setToken(account.accessToken ?? '');
-            print(account.accessToken);
-
-            showOkAlertDialog(
-                context: context,
-                title: "Đăng nhập thành công",
-                message: 'phone: ${account.username}, token: ${account.accessToken}');
-            // N.toPatientList();
+            _storageService.setToken(account.toJson().toString());
+            if (account.roleId == 30) {
+              _getCustomerInfoUsecase.execute(
+                observer: Observer(
+                  onSubscribe: () {},
+                  onSuccess: (customer) async {
+                    print(customer.toJson());
+                    await _storageService.setCustomer(customer.toJson().toString());
+                    if (customer.name != null &&
+                        customer.gender != null &&
+                        customer.birthday != null &&
+                        customer.phoneNumber != null &&
+                        customer.activityClass != null &&
+                        customer.facultyId != null) {
+                      N.toHome();
+                    } else {
+                      N.toProfile();
+                    }
+                  },
+                  onError: (e) async {
+                    if (e is DioError) {
+                      _showToastMessage(e.message);
+                    }
+                    if (kDebugMode) {
+                      print(e.toString());
+                    }
+                    ignoringPointer.value = false;
+                    loginState.onSuccess();
+                  },
+                ),
+              );
+            } else {
+              N.toStaffPage();
+            }
           },
           onError: (e) {
             if (e is DioError) {

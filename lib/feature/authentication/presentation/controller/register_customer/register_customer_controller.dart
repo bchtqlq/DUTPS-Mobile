@@ -88,7 +88,9 @@ class RegisterCustomerController extends BaseController {
             registerState.onSuccess();
             ignoringPointer.value = false;
 
-            _storageService.setToken(account.accessToken ?? '');
+            _storageService.setToken(account.toJson().toString());
+            print(account.accessToken);
+
             showOkAlertDialog(
               context: context,
               title: "Đăng ký thành công",

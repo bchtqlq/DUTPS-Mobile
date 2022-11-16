@@ -34,7 +34,15 @@ class N {
     type.navigate(name: AppRoute.chatHome);
   }
 
-  static void toScanQRCode({RouteType type = RouteType.offAll}) {
+  static void toStaffPage({RouteType type = RouteType.offAll}) {
     type.navigate(name: AppRoute.staffPage);
+  }
+
+  static void toProfile({RouteType type = RouteType.offAll}) {
+    type.navigate(name: AppRoute.profile);
+  }
+
+  static void toHome({RouteType type = RouteType.offAll}) {
+    type.navigate(name: AppRoute.home);
   }
 }

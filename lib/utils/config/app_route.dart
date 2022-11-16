@@ -1,3 +1,7 @@
+import 'package:dut_packing_system/feature/customer/presentation/view/home/home_bindings.dart';
+import 'package:dut_packing_system/feature/customer/presentation/view/home/home_page.dart';
+import 'package:dut_packing_system/feature/customer/presentation/view/profile/profile_bindings.dart';
+import 'package:dut_packing_system/feature/customer/presentation/view/profile/profile_page.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/staff_bindings.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/staff_page.dart';
 import 'package:get/route_manager.dart';
@@ -27,6 +31,8 @@ class AppRoute {
   static String confirmRegisterCustomer = '/confirmRegisterCustomer';
   static String chatHome = '/chatHome';
   static String staffPage = '/staffPage';
+  static String profile = '/profile';
+  static String home = '/home';
 
   static List<GetPage> generateGetPages = [
     GetPage(
@@ -74,6 +80,18 @@ class AppRoute {
       name: staffPage,
       page: StaffPage.new,
       binding: StaffBindings(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: profile,
+      page: ProfilePage.new,
+      binding: ProfileBindings(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: home,
+      page: HomePage.new,
+      binding: HomeBindings(),
       transition: Transition.cupertino,
     ),
   ];
