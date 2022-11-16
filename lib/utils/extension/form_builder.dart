@@ -10,6 +10,9 @@ enum FormFieldType {
   confirmPassword,
   email,
   memo,
+  name,
+  phone,
+  activityClass,
 }
 
 extension FormFieldTypeExtension on FormFieldType {
@@ -17,6 +20,12 @@ extension FormFieldTypeExtension on FormFieldType {
     switch (this) {
       case FormFieldType.username:
         return 'Tài khoản';
+      case FormFieldType.name:
+        return 'Họ và tên';
+      case FormFieldType.phone:
+        return 'Số điện thoại';
+      case FormFieldType.activityClass:
+        return 'Lớp sinh hoạt';
       case FormFieldType.email:
         return 'E-mail';
       case FormFieldType.password:
@@ -45,6 +54,8 @@ extension FormFieldTypeExtension on FormFieldType {
     switch (this) {
       case FormFieldType.username:
         return TextInputType.name;
+      case FormFieldType.phone:
+        return TextInputType.phone;
       case FormFieldType.memo:
         return TextInputType.multiline;
       default:
@@ -66,6 +77,32 @@ extension FormFieldTypeExtension on FormFieldType {
       case FormFieldType.username:
         validators = [
           FormBuilderValidators.required(errorText: 'Không được để trống tên tài khoản'),
+        ];
+        break;
+      case FormFieldType.phone:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống số điện thoại'),
+          FormBuilderValidators.integer(errorText: 'Số điện thoại bao gồm các chữ số'),
+          FormBuilderValidators.compose(
+            [
+              (val) {
+                final validNumber = RegExp(r'^[+|0]{1}[0-9]{9,11}$');
+                return validNumber.hasMatch(val.toString().trim()) ? null : "Vui lòng nhập vào số điện thoại của bạn";
+              },
+            ],
+          ),
+        ];
+        break;
+
+      case FormFieldType.name:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống họ và tên'),
+        ];
+        break;
+
+      case FormFieldType.activityClass:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống lớp sinh hoạt'),
         ];
         break;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:get/route_manager.dart';
@@ -53,9 +54,9 @@ Widget commonCloseButton({void Function()? onPressed}) {
 }
 
 @swidget
-Widget loadingWidget() {
-  return const Center(
-    child: CupertinoActivityIndicator(color: ColorName.black000),
+Widget loadingWidget({Color? color}) {
+  return Center(
+    child: CupertinoActivityIndicator(color: color ?? ColorName.black000),
   );
 }
 
@@ -79,6 +80,96 @@ Widget errorDialog({
         child: const Text('OK'),
       ),
     ],
+  );
+}
+
+@swidget
+Widget commonDateTimePicker({
+  required String title,
+  String? value,
+  void Function()? onPressed,
+  double height = 50,
+  required BuildContext context,
+  required Function(DateTime, String) callback,
+}) {
+  return CupertinoButton(
+    padding: EdgeInsets.zero,
+    onPressed: () {
+      onPressed?.call();
+      DatePicker.showDatePicker(
+        context,
+        showTitleActions: true,
+        minTime: DateTime(1900, 1, 1),
+        maxTime: DateTime(2100, 1, 1),
+        onChanged: (date) {},
+        onConfirm: (birthday) {
+          var date =
+              "${birthday.year.toString()}-${birthday.month.toString().padLeft(2, '0')}-${birthday.day.toString().padLeft(2, '0')}";
+          callback(birthday, date);
+        },
+        currentTime: DateTime.now(),
+        locale: LocaleType.vi,
+      );
+    },
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 22),
+      height: height,
+      decoration: BoxDecoration(
+        color: value != null ? ColorName.whiteFff : ColorName.grayF8f,
+        border: Border.all(color: ColorName.gray838, width: 0.5),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(width: 13),
+          Text(
+            value ?? title,
+            style: AppTextStyle.w400s12(value != null ? ColorName.black000 : ColorName.gray838),
+          ),
+          const Spacer(),
+          const Icon(Icons.calendar_month_outlined, color: ColorName.gray838),
+          const SizedBox(width: 13),
+        ],
+      ),
+    ),
+  );
+}
+
+@swidget
+Widget commonDropDown({
+  required String title,
+  String? value,
+  void Function()? onPressed,
+  double height = 50,
+}) {
+  return CupertinoButton(
+    padding: EdgeInsets.zero,
+    onPressed: onPressed,
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 22),
+      height: height,
+      decoration: BoxDecoration(
+        color: value != null ? ColorName.whiteFff : ColorName.grayF8f,
+        border: Border.all(color: ColorName.gray838, width: 0.5),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(width: 13),
+          Text(
+            value ?? title,
+            style: AppTextStyle.w400s12(value != null ? ColorName.black000 : ColorName.gray838),
+          ),
+          const Spacer(),
+          const Icon(Icons.keyboard_arrow_down, color: ColorName.black000),
+          const SizedBox(width: 13),
+        ],
+      ),
+    ),
   );
 }
 
