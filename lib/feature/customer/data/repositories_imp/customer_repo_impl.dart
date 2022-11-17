@@ -1,4 +1,5 @@
 import 'package:dut_packing_system/base/presentation/base_controller.dart';
+import 'package:dut_packing_system/feature/customer/data/models/ch%E1%BA%B9ck_in_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/customer_api.dart';
@@ -43,5 +44,10 @@ class CustomerRepoImpl implements CustomerRepo {
   @override
   Future<void> changePassword(ChangePasswordRequest request) {
     return _customerAPI.changePassword(request);
+  }
+
+  @override
+  Future<CheckInModel> getCheckIn() {
+    return _customerAPI.getCheckIn();
   }
 }

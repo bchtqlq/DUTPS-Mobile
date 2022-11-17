@@ -1,4 +1,3 @@
-import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
 import 'package:dut_packing_system/feature/customer/domain/repositoties/customer_repo.dart';
 

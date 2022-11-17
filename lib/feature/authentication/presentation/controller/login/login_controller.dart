@@ -38,8 +38,8 @@ class LoginController extends BaseController {
     super.onInit();
     if (kDebugMode) {
       // test user
-      // usernameTextEditingController.text = 'quylt123';
-      // passwordTextEditingController.text = '123123';
+      usernameTextEditingController.text = 'quylt123';
+      passwordTextEditingController.text = '123123';
 
       // test staff
       usernameTextEditingController.text = 'admin';
