@@ -24,7 +24,7 @@ class SettingController extends BaseController {
     showOkCancelDialog(
       cancelText: "Huỷ",
       okText: "Đăng xuất",
-      message: "Bạnc chắc chắn muôn đăng xuất khỏi hệ thống?",
+      message: "Bạn chắc chắn muốn đăng xuất khỏi hệ thống?",
       title: "Đăng xuất",
     ).then((value) async {
       if (value == OkCancelResult.ok) {

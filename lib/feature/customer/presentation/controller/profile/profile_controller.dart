@@ -6,6 +6,7 @@ import 'package:dut_packing_system/base/presentation/base_widget.dart';
 import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/customer_update_request.dart';
+import 'package:dut_packing_system/feature/customer/domain/usecases/get_customer_info_usecase.dart';
 import 'package:dut_packing_system/feature/customer/domain/usecases/get_faculties_usecase.dart';
 import 'package:dut_packing_system/feature/customer/domain/usecases/update_customer_usecase.dart';
 import 'package:dut_packing_system/utils/config/app_navigation.dart';
@@ -15,11 +16,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ProfileController extends BaseController<bool> {
-  ProfileController(this._storageService, this._getFacultiesUsecase, this._updateCustomerUsecase);
+  ProfileController(
+    this._storageService,
+    this._getFacultiesUsecase,
+    this._updateCustomerUsecase,
+    this._getCustomerInfoUsecase,
+  );
 
   final StorageService _storageService;
   final GetFacultiesUsecase _getFacultiesUsecase;
   final UpdateCustomerUsecase _updateCustomerUsecase;
+  final GetCustomerInfoUsecase _getCustomerInfoUsecase;
 
   final phoneTextEditingController = TextEditingController();
   final nameTextEditingController = TextEditingController();
@@ -130,15 +137,6 @@ class ProfileController extends BaseController<bool> {
       customer.value.phoneNumber = _phone;
       customer.value.activityClass = _class;
 
-      print(CustomerUpdateRequest(
-        customer.value.name,
-        customer.value.gender,
-        birthdayString.value,
-        customer.value.phoneNumber,
-        customer.value.activityClass,
-        customer.value.facultyId,
-      ).toJson());
-
       if (updateState.isLoading) return;
       _updateCustomerUsecase.execute(
         observer: Observer(
@@ -150,14 +148,11 @@ class ProfileController extends BaseController<bool> {
           onSuccess: (_) async {
             ignoringPointer.value = false;
             updateState.onSuccess();
-            print(customer.value.toJson().toString());
-            await _storageService.setCustomer(customer.value.toJson().toString());
-            N.toHome();
+            loadCustomerInfo();
           },
           onError: (e) async {
             if (e is DioError) {
               if (e.response != null) {
-                print("-----------------------------");
                 _showToastMessage(e.response!.data['errors'].toString());
                 print(e.response!.data['errors'].toString());
               } else {
@@ -183,6 +178,32 @@ class ProfileController extends BaseController<bool> {
     } on Exception catch (e) {
       isDisableButton.value = true;
     }
+  }
+
+  void loadCustomerInfo() {
+    _getCustomerInfoUsecase.execute(
+      observer: Observer(
+        onSubscribe: () {},
+        onSuccess: (result) async {
+          await _storageService.setCustomer(result.toJson().toString());
+          N.toHome();
+        },
+        onError: (e) async {
+          if (e is DioError) {
+            if (e.response != null) {
+              _showToastMessage(e.response!.data['errors'].toString());
+            } else {
+              _showToastMessage(e.message);
+            }
+          }
+          if (kDebugMode) {
+            print(e.toString());
+          }
+          ignoringPointer.value = false;
+          updateState.onSuccess();
+        },
+      ),
+    );
   }
 
   void _showToastMessage(String message) {
