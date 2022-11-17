@@ -123,7 +123,20 @@ class StaffPage extends BaseWidget<StaffController> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: CommonButton(
+                        onPressed: () => controller.logout(),
+                        borderWidth: 1,
+                        borderColor: ColorName.primaryColor,
+                        fillColor: ColorName.primaryColor,
+                        child: Text(
+                          'Đăng xuất',
+                          style: AppTextStyle.w500s13(ColorName.whiteFff),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -135,6 +148,15 @@ class StaffPage extends BaseWidget<StaffController> {
             ),
             if (controller.isScan.value) scanQRCode(),
             if (controller.isChecked.value) checkQRCode(context),
+            if (controller.confirmState.value)
+              Positioned.fill(
+                child: Container(
+                  color: ColorName.black000.withOpacity(0.6),
+                  child: const LoadingWidget(
+                    color: ColorName.whiteFff,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

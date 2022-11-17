@@ -37,8 +37,13 @@ class LoginController extends BaseController {
   void onInit() {
     super.onInit();
     if (kDebugMode) {
-      usernameTextEditingController.text = 'quylt123';
-      passwordTextEditingController.text = '123123';
+      // test user
+      // usernameTextEditingController.text = 'quylt123';
+      // passwordTextEditingController.text = '123123';
+
+      // test staff
+      usernameTextEditingController.text = 'admin';
+      passwordTextEditingController.text = 'Pa\$\$w0rd';
     }
   }
 
