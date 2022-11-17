@@ -49,6 +49,7 @@ class StaffController extends BaseController {
       (scanData) {
         var result = scanData.code ?? "";
         if (result != "") {
+          print(result);
           _qrCodecontroller?.pauseCamera();
           if (isCheckIn.value) {
             try {

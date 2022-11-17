@@ -6,8 +6,8 @@ class CreateCheckOutRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'customerUsername': checkInId,
-      'vehicalId': dateOfCheckOut,
+      'checkInId': checkInId,
+      'dateOfCheckOut': dateOfCheckOut,
     };
   }
 }

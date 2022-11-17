@@ -2,6 +2,7 @@ import 'package:dut_packing_system/base/presentation/base_widget.dart';
 import 'package:dut_packing_system/base/presentation/widgets/common.dart';
 import 'package:dut_packing_system/feature/staff/presentation/controller/staff_controller.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/check_qr_code/check_qr_code.dart';
+import 'package:dut_packing_system/feature/staff/presentation/view/check_qr_code/check_qr_code_out.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/scan_qr_code/scan_qr_code.dart';
 import 'package:dut_packing_system/utils/config/app_text_style.dart';
 import 'package:dut_packing_system/utils/gen/assets.gen.dart';
@@ -147,7 +148,8 @@ class StaffPage extends BaseWidget<StaffController> {
               child: Assets.images.launcherIcon.image(width: 100),
             ),
             if (controller.isScan.value) scanQRCode(),
-            if (controller.isChecked.value) checkQRCode(context),
+            if (controller.isChecked.value && controller.isCheckIn.value) checkQRCode(context),
+            if (controller.isChecked.value && !controller.isCheckIn.value) checkQRCodeOut(context),
             if (controller.confirmState.value)
               Positioned.fill(
                 child: Container(

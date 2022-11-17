@@ -1,3 +1,4 @@
+import 'package:dut_packing_system/feature/customer/data/models/ch%E1%BA%B9ck_in_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/add_vehical_request.dart';
@@ -12,4 +13,5 @@ abstract class CustomerRepo {
   Future<void> updateVehical(int id, AddVehicalRequest request);
   Future<void> deleteVehical(int id);
   Future<void> changePassword(ChangePasswordRequest request);
+  Future<CheckInModel> getCheckIn();
 }
