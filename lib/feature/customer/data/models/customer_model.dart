@@ -19,19 +19,20 @@ class CustomerModel {
   List<dynamic>? vehicals;
   VehicalModel? vehical;
 
-  CustomerModel(
-      {this.username,
-      this.email,
-      this.role,
-      this.name,
-      this.gender,
-      this.birthday,
-      this.phoneNumber,
-      this.activityClass,
-      this.facultyId,
-      this.falcultyName,
-      this.vehicals,
-      this.vehical});
+  CustomerModel({
+    this.username,
+    this.email,
+    this.role,
+    this.name,
+    this.gender,
+    this.birthday,
+    this.phoneNumber,
+    this.activityClass,
+    this.facultyId,
+    this.falcultyName,
+    this.vehicals,
+    this.vehical,
+  });
 
   Map<String, dynamic> toJson() {
     return {

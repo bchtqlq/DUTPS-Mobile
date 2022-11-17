@@ -1,4 +1,3 @@
-import 'package:dut_packing_system/base/presentation/base_widget.dart';
 import 'package:dut_packing_system/base/presentation/widgets/common.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/staff_page.dart';
 import 'package:dut_packing_system/utils/config/app_text_style.dart';
@@ -66,11 +65,12 @@ extension CheckQRCode on StaffPage {
                               const SizedBox(width: 16),
                               Text("Họ và tên: ", style: AppTextStyle.w600s15(ColorName.black222)),
                               const SizedBox(width: 10),
-                              Text("Lê Thanh Quý", style: AppTextStyle.w500s15(ColorName.black000)),
+                              Text("${controller.customer.value.name}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
                               const SizedBox(width: 16),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -78,11 +78,12 @@ extension CheckQRCode on StaffPage {
                               const SizedBox(width: 16),
                               Text("Ngày sinh: ", style: AppTextStyle.w600s15(ColorName.black222)),
                               const SizedBox(width: 10),
-                              Text("14-10-2001", style: AppTextStyle.w500s15(ColorName.black000)),
+                              Text("${controller.customer.value.birthday}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
                               const SizedBox(width: 16),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -90,11 +91,12 @@ extension CheckQRCode on StaffPage {
                               const SizedBox(width: 16),
                               Text("Giới tính: ", style: AppTextStyle.w600s15(ColorName.black222)),
                               const SizedBox(width: 10),
-                              Text("Nam", style: AppTextStyle.w500s15(ColorName.black000)),
+                              Text(controller.customer.value.gender == 1 ? 'Nam' : 'Nữ',
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
                               const SizedBox(width: 16),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -102,11 +104,12 @@ extension CheckQRCode on StaffPage {
                               const SizedBox(width: 16),
                               Text("Số điện thoại: ", style: AppTextStyle.w600s15(ColorName.black222)),
                               const SizedBox(width: 10),
-                              Text("0384933379", style: AppTextStyle.w500s15(ColorName.black000)),
+                              Text("${controller.customer.value.phoneNumber}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
                               const SizedBox(width: 16),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -114,11 +117,12 @@ extension CheckQRCode on StaffPage {
                               const SizedBox(width: 16),
                               Text("Khoa: ", style: AppTextStyle.w600s15(ColorName.black222)),
                               const SizedBox(width: 10),
-                              Text("Công nghệ thông tin", style: AppTextStyle.w500s15(ColorName.black000)),
+                              Text("${controller.customer.value.falcultyName}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
                               const SizedBox(width: 16),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -126,50 +130,37 @@ extension CheckQRCode on StaffPage {
                               const SizedBox(width: 16),
                               Text("Lớp: ", style: AppTextStyle.w600s15(ColorName.black222)),
                               const SizedBox(width: 10),
-                              Text("19TCLC_DT4", style: AppTextStyle.w500s15(ColorName.black000)),
+                              Text("${controller.customer.value.activityClass}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
                               const SizedBox(width: 16),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          Text(
-                            "Danh sách thông tin phương tiện",
-                            style: AppTextStyle.w600s15(ColorName.black000),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 16),
+                              Text("Biển số xe: ", style: AppTextStyle.w600s15(ColorName.black222)),
+                              const SizedBox(width: 10),
+                              Text("${controller.customer.value.vehical!.licensePlate}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
+                              const SizedBox(width: 16),
+                            ],
                           ),
-                          const SizedBox(height: 5),
-                          Expanded(
-                            child: Container(
-                              color: ColorName.whiteFff,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: 3,
-                                itemBuilder: (context, index) {
-                                  return CupertinoButton(
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () {
-                                      controller.showOkDialog(
-                                        title: "92N1-123456",
-                                        message: "Xe máy màu đen các kiểu",
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      decoration: const BoxDecoration(
-                                        color: ColorName.whiteFff,
-                                        border: Border(bottom: BorderSide(color: ColorName.grayC7c, width: 0.5)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "92N1-123456",
-                                          style: AppTextStyle.w500s13(ColorName.black000),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 16),
+                              Text("Mô tả: ", style: AppTextStyle.w600s15(ColorName.black222)),
+                              const SizedBox(width: 10),
+                              Text("${controller.customer.value.vehical!.description}",
+                                  style: AppTextStyle.w500s15(ColorName.black000)),
+                              const SizedBox(width: 16),
+                            ],
                           ),
-                          const SizedBox(height: 5),
                         ],
                       ),
                     ),
@@ -200,7 +191,6 @@ extension CheckQRCode on StaffPage {
                               borderWidth: 1,
                               borderColor: ColorName.primaryColor,
                               fillColor: ColorName.primaryColor,
-                              state: controller.confirmState,
                               child: Text(
                                 'Xác nhận',
                                 style: AppTextStyle.w500s13(ColorName.whiteFff),
