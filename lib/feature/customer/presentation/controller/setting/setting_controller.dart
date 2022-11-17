@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 
 class SettingController extends BaseController {
   SettingController(this._storageService, this._changePasswordUsecase);
+
   final StorageService _storageService;
   final ChangePasswordUsecase _changePasswordUsecase;
 
@@ -195,5 +196,9 @@ class SettingController extends BaseController {
       ),
       input: request,
     );
+  }
+
+  void toHistory() {
+    N.toHistory();
   }
 }
