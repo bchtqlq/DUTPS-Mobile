@@ -2,6 +2,8 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:dut_packing_system/feature/authentication/data/providers/remote/request/register_request.dart';
 import 'package:dut_packing_system/feature/authentication/domain/usecases/register_usecase.dart';
+import 'package:dut_packing_system/feature/customer/domain/usecases/get_customer_info_usecase.dart';
+import 'package:dut_packing_system/utils/config/app_navigation.dart';
 import 'package:dut_packing_system/utils/extension/form_builder.dart';
 import 'package:dut_packing_system/utils/services/storage_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,10 +12,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import '../../../../../base/presentation/base_controller.dart';
 
 class RegisterCustomerController extends BaseController {
-  RegisterCustomerController(this._registerUsecase, this._storageService);
+  RegisterCustomerController(this._registerUsecase, this._storageService, this._getCustomerInfoUsecase);
 
   final RegisterUsecase _registerUsecase;
   final StorageService _storageService;
+  final GetCustomerInfoUsecase _getCustomerInfoUsecase;
 
   final usernameTextEditingController = TextEditingController();
   final emailTextEditingController = TextEditingController();
@@ -89,12 +92,35 @@ class RegisterCustomerController extends BaseController {
             ignoringPointer.value = false;
 
             _storageService.setToken(account.toJson().toString());
-            print(account.accessToken);
 
-            showOkAlertDialog(
-              context: context,
-              title: "Đăng ký thành công",
-              message: 'phone: ${account.username}, token: ${account.accessToken}',
+            _getCustomerInfoUsecase.execute(
+              observer: Observer(
+                onSubscribe: () {},
+                onSuccess: (customer) async {
+                  print(customer.toJson());
+                  await _storageService.setCustomer(customer.toJson().toString());
+                  if (customer.name != null &&
+                      customer.gender != null &&
+                      customer.birthday != null &&
+                      customer.phoneNumber != null &&
+                      customer.activityClass != null &&
+                      customer.facultyId != null) {
+                    N.toHome();
+                  } else {
+                    N.toProfile();
+                  }
+                },
+                onError: (e) async {
+                  if (e is DioError) {
+                    _showToastMessage(e.message);
+                  }
+                  if (kDebugMode) {
+                    print(e.toString());
+                  }
+                  ignoringPointer.value = false;
+                  registerState.onSuccess();
+                },
+              ),
             );
           },
           onError: (e) {

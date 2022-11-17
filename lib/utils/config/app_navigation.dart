@@ -45,4 +45,8 @@ class N {
   static void toHome({RouteType type = RouteType.offAll}) {
     type.navigate(name: AppRoute.home);
   }
+
+  static void toAddvehical({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.addVehical);
+  }
 }

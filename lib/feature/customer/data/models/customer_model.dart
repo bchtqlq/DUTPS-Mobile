@@ -17,20 +17,21 @@ class CustomerModel {
   String? facultyId;
   String? falcultyName;
   List<dynamic>? vehicals;
+  VehicalModel? vehical;
 
-  CustomerModel({
-    this.username,
-    this.email,
-    this.role,
-    this.name,
-    this.gender,
-    this.birthday,
-    this.phoneNumber,
-    this.activityClass,
-    this.facultyId,
-    this.falcultyName,
-    this.vehicals,
-  });
+  CustomerModel(
+      {this.username,
+      this.email,
+      this.role,
+      this.name,
+      this.gender,
+      this.birthday,
+      this.phoneNumber,
+      this.activityClass,
+      this.facultyId,
+      this.falcultyName,
+      this.vehicals,
+      this.vehical});
 
   Map<String, dynamic> toJson() {
     return {
@@ -44,7 +45,23 @@ class CustomerModel {
       '"activityClass"': '"${activityClass ?? ""}"',
       '"facultyId"': '"${facultyId ?? ""}"',
       '"falcultyName"': '"${falcultyName ?? ""}"',
-      '"vehicals"': vehicals != null ? jsonEncode(vehicals!.map((e) => e.toJson()).toList()) : [],
+      '"vehicals"': vehicals != null ? jsonEncode(vehicals!.map((e) => e).toList()) : List<VehicalModel>.empty(),
+    };
+  }
+
+  Map<String, dynamic> toJsonWithVehical(VehicalModel vehicalModel) {
+    return {
+      '"username"': '"$username"',
+      '"email"': '"$email"',
+      '"role"': role,
+      '"name"': '"${name ?? ""}"',
+      '"gender"': gender ?? -1,
+      '"birthday"': '"${birthday ?? DateTime(2022)}"',
+      '"phoneNumber"': '"${phoneNumber ?? ""}"',
+      '"activityClass"': '"${activityClass ?? ""}"',
+      '"facultyId"': '"${facultyId ?? ""}"',
+      '"falcultyName"': '"${falcultyName ?? ""}"',
+      '"vehical"': vehicalModel.toJson(),
     };
   }
 
@@ -61,6 +78,22 @@ class CustomerModel {
       facultyId: json['facultyId'],
       falcultyName: json['falcultyName'],
       vehicals: List<VehicalModel>.from(json['vehicals'].map((model) => VehicalModel.fromJson(model))),
+    );
+  }
+
+  factory CustomerModel.fromJsonWithVehical(Map<String, dynamic> json) {
+    return CustomerModel(
+      username: json['username'],
+      email: json['email'],
+      role: json['role'],
+      name: json['name'],
+      gender: json['gender'],
+      birthday: DateTime.parse(json['birthday']),
+      phoneNumber: json['phoneNumber'],
+      activityClass: json['activityClass'],
+      facultyId: json['facultyId'],
+      falcultyName: json['falcultyName'],
+      vehical: VehicalModel.fromJson(json['vehical']),
     );
   }
 }

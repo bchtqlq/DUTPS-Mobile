@@ -80,7 +80,6 @@ class LoginController extends BaseController {
             hideErrorMessage();
           },
           onSuccess: (account) {
-            loginState.onSuccess();
             ignoringPointer.value = false;
 
             _storageService.setToken(account.toJson().toString());

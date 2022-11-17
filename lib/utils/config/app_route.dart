@@ -1,3 +1,5 @@
+import 'package:dut_packing_system/feature/customer/presentation/view/add_vehical/add_vehical_bindings.dart';
+import 'package:dut_packing_system/feature/customer/presentation/view/add_vehical/add_vehical_page.dart';
 import 'package:dut_packing_system/feature/customer/presentation/view/home/home_bindings.dart';
 import 'package:dut_packing_system/feature/customer/presentation/view/home/home_page.dart';
 import 'package:dut_packing_system/feature/customer/presentation/view/profile/profile_bindings.dart';
@@ -33,6 +35,7 @@ class AppRoute {
   static String staffPage = '/staffPage';
   static String profile = '/profile';
   static String home = '/home';
+  static String addVehical = '/addVehical';
 
   static List<GetPage> generateGetPages = [
     GetPage(
@@ -92,6 +95,12 @@ class AppRoute {
       name: home,
       page: HomePage.new,
       binding: HomeBindings(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: addVehical,
+      page: AddVehicalPage.new,
+      binding: AddVehicalBindings(),
       transition: Transition.cupertino,
     ),
   ];
