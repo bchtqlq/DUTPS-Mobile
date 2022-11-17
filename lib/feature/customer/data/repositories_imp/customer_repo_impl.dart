@@ -3,6 +3,7 @@ import 'package:dut_packing_system/feature/customer/data/models/customer_model.d
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/customer_api.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/add_vehical_request.dart';
+import 'package:dut_packing_system/feature/customer/data/providers/remote/request/change_password_request.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/customer_update_request.dart';
 import 'package:dut_packing_system/feature/customer/domain/repositoties/customer_repo.dart';
 
@@ -37,5 +38,10 @@ class CustomerRepoImpl implements CustomerRepo {
   @override
   Future<void> deleteVehical(int id) {
     return _customerAPI.deleteVehical(id);
+  }
+
+  @override
+  Future<void> changePassword(ChangePasswordRequest request) {
+    return _customerAPI.changePassword(request);
   }
 }

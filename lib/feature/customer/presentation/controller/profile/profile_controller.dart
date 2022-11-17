@@ -14,7 +14,7 @@ import 'package:dut_packing_system/utils/services/storage_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class ProfileController extends BaseController {
+class ProfileController extends BaseController<bool> {
   ProfileController(this._storageService, this._getFacultiesUsecase, this._updateCustomerUsecase);
 
   final StorageService _storageService;
@@ -43,15 +43,27 @@ class ProfileController extends BaseController {
   final errorMessage = ''.obs;
   final isShowPassword = true.obs;
 
+  var isShowAppbar = false.obs;
+
   var customer = CustomerModel().obs;
 
   @override
   void onInit() {
     super.onInit();
+    if (input) {
+      isShowAppbar.value = true;
+    }
     _storageService.getCustomer().then((value) {
       customer.value = CustomerModel.fromJson(jsonDecode(value));
-      phoneTextEditingController.text = customer.value.phoneNumber!;
-      nameTextEditingController.text = customer.value.name!;
+      if (input) {
+        phoneTextEditingController.text = customer.value.phoneNumber!;
+        nameTextEditingController.text = customer.value.name!;
+        classTextEditingController.text = customer.value.activityClass!;
+
+        birthdayString.value = "${customer.value.birthday!.year.toString()}"
+            "-${customer.value.birthday!.month.toString().padLeft(2, '0')}"
+            "-${customer.value.birthday!.day.toString().padLeft(2, '0')}";
+      }
     });
   }
 
@@ -107,7 +119,7 @@ class ProfileController extends BaseController {
         classField,
       ].validateFormFields();
 
-      if (customer.value.birthday == DateTime(2022) ||
+      if (birthdayString.value.isEmpty ||
           customer.value.gender == -1 ||
           customer.value.facultyId == null ||
           customer.value.facultyId == "") {
@@ -117,6 +129,15 @@ class ProfileController extends BaseController {
       customer.value.name = _name;
       customer.value.phoneNumber = _phone;
       customer.value.activityClass = _class;
+
+      print(CustomerUpdateRequest(
+        customer.value.name,
+        customer.value.gender,
+        birthdayString.value,
+        customer.value.phoneNumber,
+        customer.value.activityClass,
+        customer.value.facultyId,
+      ).toJson());
 
       if (updateState.isLoading) return;
       _updateCustomerUsecase.execute(

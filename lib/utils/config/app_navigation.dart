@@ -38,8 +38,8 @@ class N {
     type.navigate(name: AppRoute.staffPage);
   }
 
-  static void toProfile({RouteType type = RouteType.offAll}) {
-    type.navigate(name: AppRoute.profile);
+  static void toProfile({RouteType type = RouteType.offAll, bool isLogged = false}) {
+    type.navigate(name: AppRoute.profile, arguments: isLogged);
   }
 
   static void toHome({RouteType type = RouteType.offAll}) {
@@ -48,5 +48,9 @@ class N {
 
   static void toAddvehical({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.addVehical);
+  }
+
+  static void toSetting({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.setting);
   }
 }

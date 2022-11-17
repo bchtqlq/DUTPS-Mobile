@@ -7,6 +7,8 @@ typedef MyFormFieldState = FormBuilderFieldState<FormBuilderField<dynamic>, dyna
 enum FormFieldType {
   username,
   password,
+  newPassword,
+  oldPassword,
   confirmPassword,
   email,
   memo,
@@ -31,6 +33,10 @@ extension FormFieldTypeExtension on FormFieldType {
         return 'E-mail';
       case FormFieldType.password:
         return 'Mật khẩu';
+      case FormFieldType.newPassword:
+        return 'Mật khẩu mới';
+      case FormFieldType.oldPassword:
+        return 'Mật khẩu hiện tại';
       case FormFieldType.confirmPassword:
         return 'Xác nhận mật khẩu';
       case FormFieldType.memo:
@@ -123,10 +129,22 @@ extension FormFieldTypeExtension on FormFieldType {
           FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
         ];
         break;
+      case FormFieldType.newPassword:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống mật khẩu mới'),
+          FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
+        ];
+        break;
+      case FormFieldType.oldPassword:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống mật khẩu hiện tại'),
+          FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
+        ];
+        break;
       case FormFieldType.confirmPassword:
         validators = [
           FormBuilderValidators.required(errorText: 'Không được để trống mật khẩu xác nhận'),
-          FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
+          FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 6 ký tự'),
         ];
         break;
 
