@@ -53,4 +53,8 @@ class N {
   static void toSetting({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.setting);
   }
+
+   static void toHistory({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.history);
+  }
 }

@@ -42,7 +42,7 @@ class SettingPage extends BaseWidget<SettingController> {
                       Icons.history_outlined,
                       color: ColorName.primaryColor,
                     ),
-                    onPressed: () {},
+                    onPressed: controller.toHistory,
                   ),
                   const SizedBox(height: 15),
                   Padding(

@@ -2,6 +2,8 @@ import 'package:dut_packing_system/base/presentation/base_controller.dart';
 import 'package:dut_packing_system/feature/customer/data/models/ch%E1%BA%B9ck_in_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
+import 'package:dut_packing_system/feature/customer/data/models/history_model.dart';
+import 'package:dut_packing_system/feature/customer/data/models/list_history_model.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/customer_api.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/add_vehical_request.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/change_password_request.dart';
@@ -49,5 +51,10 @@ class CustomerRepoImpl implements CustomerRepo {
   @override
   Future<CheckInModel> getCheckIn() {
     return _customerAPI.getCheckIn();
+  }
+
+  @override
+  Future<ListHistoryModel> getHistory(String customerUsername) {
+    return _customerAPI.getHistory(customerUsername);
   }
 }

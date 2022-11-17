@@ -84,6 +84,8 @@ class AddVehicalController extends BaseController {
       observer: Observer(
         onSubscribe: () {},
         onSuccess: (result) async {
+          licensePlateTextEditingController.text = "";
+          memoTextEditingController.text = "";
           print(result.toJson());
           await _storageService.setCustomer(result.toJson().toString());
           customer.value = result;
