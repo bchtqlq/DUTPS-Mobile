@@ -57,7 +57,7 @@ class StaffController extends BaseController {
               isChecked.value = true;
             } catch (e) {
               showOkDialog(title: "Mã không hợp lệ", message: "Đây không phải là một mã hợp lệ vui lòng kiểm tra lại");
-              _qrCodecontroller?.resumeCamera();
+              pauseScan();
             }
           } else {
             try {
@@ -65,7 +65,7 @@ class StaffController extends BaseController {
               isChecked.value = true;
             } catch (e) {
               showOkDialog(title: "Mã không hợp lệ", message: "Đây không phải là một mã hợp lệ vui lòng kiểm tra lại");
-              _qrCodecontroller?.resumeCamera();
+              pauseScan();
             }
           }
         }
