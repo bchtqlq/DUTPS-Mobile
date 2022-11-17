@@ -12,7 +12,7 @@ class CustomerUpdateRequest {
     return {
       'name': name,
       'gender': gender,
-      'birthday': '$birthday',
+      'birthday': birthday,
       'phoneNumber': phoneNumber,
       'class': activityClass,
       'facultyId': facultyId,

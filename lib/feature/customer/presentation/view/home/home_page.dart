@@ -3,6 +3,7 @@ import 'package:dut_packing_system/base/presentation/widgets/common.dart';
 import 'package:dut_packing_system/feature/customer/presentation/view/home/widgets/widget.dart';
 import 'package:dut_packing_system/utils/config/app_navigation.dart';
 import 'package:dut_packing_system/utils/config/app_text_style.dart';
+import 'package:dut_packing_system/utils/extension/route_type.dart';
 import 'package:dut_packing_system/utils/gen/assets.gen.dart';
 import 'package:dut_packing_system/utils/gen/colors.gen.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +41,13 @@ class HomePage extends BaseWidget<HomeController> {
                       ],
                     ),
                     const Spacer(),
-                    Assets.images.profileIcon.image(width: 45),
+                    CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        N.toSetting();
+                      },
+                      child: Assets.images.profileIcon.image(width: 45),
+                    ),
                   ],
                 ),
               ),

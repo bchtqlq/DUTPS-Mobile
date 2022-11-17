@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
 import 'package:dut_packing_system/feature/customer/data/models/faculties_model.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/add_vehical_request.dart';
+import 'package:dut_packing_system/feature/customer/data/providers/remote/request/change_password_request.dart';
 import 'package:dut_packing_system/feature/customer/data/providers/remote/request/customer_update_request.dart';
 import 'package:retrofit/http.dart';
 
@@ -18,7 +19,7 @@ abstract class CustomerAPI {
   @GET('/Common/Faculties')
   Future<List<FacultyModel>> getAllFaculty();
 
-  @PUT('/Profile')
+  @POST('/Profile')
   Future<void> customerUpdate(@Body() CustomerUpdateRequest request);
 
   @POST('/Vehicals')
@@ -29,4 +30,7 @@ abstract class CustomerAPI {
 
   @DELETE('/Vehicals/{id}')
   Future<void> deleteVehical(@Path("id") int id);
+
+   @POST('/Profile/ChangePassword')
+  Future<void> changePassword(@Body() ChangePasswordRequest request);
 }

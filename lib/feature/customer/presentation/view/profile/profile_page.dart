@@ -1,3 +1,4 @@
+import 'package:dut_packing_system/base/presentation/base_app_bar.dart';
 import 'package:dut_packing_system/base/presentation/base_widget.dart';
 import 'package:dut_packing_system/base/presentation/widgets/common.dart';
 import 'package:dut_packing_system/utils/config/app_text_style.dart';
@@ -28,159 +29,166 @@ class ProfilePage extends BaseWidget<ProfileController> {
     );
     return GestureDetector(
       onTap: controller.hideKeyboard,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: KeyboardVisibilityBuilder(
-          builder: (context, isKeyboardVisible) {
-            if (!isKeyboardVisible) {
-              controller.isKeyBoardOn.value = false;
-            } else {
-              controller.isKeyBoardOn.value = true;
-            }
+      child: Obx(
+        () => Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: controller.isShowAppbar.value
+              ? BaseAppBar(
+                  title: const Text("Cập nhật thông tin cá nhân"),
+                )
+              : null,
+          body: KeyboardVisibilityBuilder(
+            builder: (context, isKeyboardVisible) {
+              if (!isKeyboardVisible) {
+                controller.isKeyBoardOn.value = false;
+              } else {
+                controller.isKeyBoardOn.value = true;
+              }
 
-            return Obx(
-              () => IgnorePointer(
-                ignoring: controller.ignoringPointer.value,
-                child: SizedBox(
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      Assets.images.profileBanner.image(width: widthScreen),
-                      Positioned(
-                        top: widthScreen * (196 / 375) - 41,
-                        right: 40,
-                        child: CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: (() {}),
-                          child: Container(
-                            height: 82,
-                            width: 82,
-                            decoration: kGradientBoxDecoration,
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Container(
-                                  height: 82,
-                                  width: 82,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(82),
-                                  ),
-                                  child: Assets.images.profileIcon.image(
-                                    width: 82,
+              return Obx(
+                () => IgnorePointer(
+                  ignoring: controller.ignoringPointer.value,
+                  child: SizedBox(
+                    height: double.infinity,
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Assets.images.profileBanner.image(width: widthScreen),
+                        Positioned(
+                          top: widthScreen * (196 / 375) - 41,
+                          right: 40,
+                          child: CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: (() {}),
+                            child: Container(
+                              height: 82,
+                              width: 82,
+                              decoration: kGradientBoxDecoration,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Container(
                                     height: 82,
-                                    fit: BoxFit.cover,
-                                  )),
+                                    width: 82,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(82),
+                                    ),
+                                    child: Assets.images.profileIcon.image(
+                                      width: 82,
+                                      height: 82,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned.fill(
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            top: widthScreen * (196 / 375) + 61,
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: controller.isKeyBoardOn.value ? 1 : 20,
-                                child: SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 4, left: 16, right: 16),
-                                    child: FormBuilder(
-                                      key: controller.formKey,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const SizedBox(height: 20),
-                                          CommonTextField(
-                                            formKey: controller.formKey,
-                                            type: FormFieldType.name,
-                                            maxLength: 35,
-                                            controller: controller.nameTextEditingController,
-                                            onTap: controller.hideErrorMessage,
-                                            onChanged: (_) {
-                                              controller.updateLoginButtonState();
-                                            },
-                                          ),
-                                          CommonDateTimePicker(
-                                            onPressed: controller.hideErrorMessage,
-                                            title: "Ngày sinh",
-                                            value: controller.birthdayString.value.isNotEmpty
-                                                ? controller.birthdayString.value
-                                                : null,
-                                            context: context,
-                                            callback: (birthday, birthdayString) {
-                                              controller.customer.value.birthday = birthday;
-                                              controller.birthdayString.value = birthdayString;
-                                            },
-                                          ),
-                                          const SizedBox(height: 2),
-                                          gender(context),
-                                          const SizedBox(height: 2),
-                                          CommonTextField(
-                                            formKey: controller.formKey,
-                                            type: FormFieldType.phone,
-                                            maxLength: 13,
-                                            controller: controller.phoneTextEditingController,
-                                            onTap: controller.hideErrorMessage,
-                                            onChanged: (_) {
-                                              controller.updateLoginButtonState();
-                                            },
-                                          ),
-                                          const SizedBox(height: 2),
-                                          CommonTextField(
-                                            formKey: controller.formKey,
-                                            type: FormFieldType.activityClass,
-                                            maxLength: 13,
-                                            controller: controller.classTextEditingController,
-                                            onTap: controller.hideErrorMessage,
-                                            onChanged: (_) {
-                                              controller.updateLoginButtonState();
-                                            },
-                                          ),
-                                          const SizedBox(height: 2),
-                                          const SizedBox(height: 5),
-                                          faculty(context),
-                                        ],
+                        Positioned.fill(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              top: widthScreen * (196 / 375) + 61,
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: controller.isKeyBoardOn.value ? 1 : 20,
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 4, left: 16, right: 16),
+                                      child: FormBuilder(
+                                        key: controller.formKey,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const SizedBox(height: 20),
+                                            CommonTextField(
+                                              formKey: controller.formKey,
+                                              type: FormFieldType.name,
+                                              maxLength: 35,
+                                              controller: controller.nameTextEditingController,
+                                              onTap: controller.hideErrorMessage,
+                                              onChanged: (_) {
+                                                controller.updateLoginButtonState();
+                                              },
+                                            ),
+                                            CommonDateTimePicker(
+                                              onPressed: controller.hideErrorMessage,
+                                              title: "Ngày sinh",
+                                              value: controller.birthdayString.value.isNotEmpty
+                                                  ? controller.birthdayString.value
+                                                  : null,
+                                              context: context,
+                                              callback: (birthday, birthdayString) {
+                                                controller.customer.value.birthday = birthday;
+                                                controller.birthdayString.value = birthdayString;
+                                              },
+                                            ),
+                                            const SizedBox(height: 2),
+                                            gender(context),
+                                            const SizedBox(height: 2),
+                                            CommonTextField(
+                                              formKey: controller.formKey,
+                                              type: FormFieldType.phone,
+                                              maxLength: 13,
+                                              controller: controller.phoneTextEditingController,
+                                              onTap: controller.hideErrorMessage,
+                                              onChanged: (_) {
+                                                controller.updateLoginButtonState();
+                                              },
+                                            ),
+                                            const SizedBox(height: 2),
+                                            CommonTextField(
+                                              formKey: controller.formKey,
+                                              type: FormFieldType.activityClass,
+                                              maxLength: 13,
+                                              controller: controller.classTextEditingController,
+                                              onTap: controller.hideErrorMessage,
+                                              onChanged: (_) {
+                                                controller.updateLoginButtonState();
+                                              },
+                                            ),
+                                            const SizedBox(height: 2),
+                                            const SizedBox(height: 5),
+                                            faculty(context),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Obx(
-                                () => CommonBottomError(text: controller.errorMessage.value),
-                              ),
-                              Obx(
-                                () => CommonBottomButton(
-                                  text: 'Tiếp tục',
-                                  onPressed: () => controller.onUpdate(context),
-                                  pressedOpacity: controller.isDisableButton.value ? 1 : 0.4,
-                                  fillColor:
-                                      controller.isDisableButton.value ? ColorName.gray838 : ColorName.primaryColor,
-                                  state: controller.updateState,
+                                const Spacer(),
+                                Obx(
+                                  () => CommonBottomError(text: controller.errorMessage.value),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (controller.pageLoading.value)
-                        Positioned.fill(
-                          child: Container(
-                            color: ColorName.black000.withOpacity(0.6),
-                            child: const LoadingWidget(
-                              color: ColorName.whiteFff,
+                                Obx(
+                                  () => CommonBottomButton(
+                                    text: 'Cập nhật',
+                                    onPressed: () => controller.onUpdate(context),
+                                    pressedOpacity: controller.isDisableButton.value ? 1 : 0.4,
+                                    fillColor:
+                                        controller.isDisableButton.value ? ColorName.gray838 : ColorName.primaryColor,
+                                    state: controller.updateState,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                    ],
+                        if (controller.pageLoading.value)
+                          Positioned.fill(
+                            child: Container(
+                              color: ColorName.black000.withOpacity(0.6),
+                              child: const LoadingWidget(
+                                color: ColorName.whiteFff,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

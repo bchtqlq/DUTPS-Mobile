@@ -4,6 +4,8 @@ import 'package:dut_packing_system/feature/customer/presentation/view/home/home_
 import 'package:dut_packing_system/feature/customer/presentation/view/home/home_page.dart';
 import 'package:dut_packing_system/feature/customer/presentation/view/profile/profile_bindings.dart';
 import 'package:dut_packing_system/feature/customer/presentation/view/profile/profile_page.dart';
+import 'package:dut_packing_system/feature/customer/presentation/view/setting/setting_bindings.dart';
+import 'package:dut_packing_system/feature/customer/presentation/view/setting/setting_page.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/staff_bindings.dart';
 import 'package:dut_packing_system/feature/staff/presentation/view/staff_page.dart';
 import 'package:get/route_manager.dart';
@@ -36,6 +38,7 @@ class AppRoute {
   static String profile = '/profile';
   static String home = '/home';
   static String addVehical = '/addVehical';
+  static String setting = '/setting';
 
   static List<GetPage> generateGetPages = [
     GetPage(
@@ -101,6 +104,12 @@ class AppRoute {
       name: addVehical,
       page: AddVehicalPage.new,
       binding: AddVehicalBindings(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: setting,
+      page: SettingPage.new,
+      binding: SettingBindings(),
       transition: Transition.cupertino,
     ),
   ];

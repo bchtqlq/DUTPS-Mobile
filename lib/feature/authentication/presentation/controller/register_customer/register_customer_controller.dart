@@ -89,8 +89,7 @@ class RegisterCustomerController extends BaseController {
           },
           onSuccess: (account) {
             registerState.onSuccess();
-            ignoringPointer.value = false;
-
+            account.roleId = 30;
             _storageService.setToken(account.toJson().toString());
 
             _getCustomerInfoUsecase.execute(
