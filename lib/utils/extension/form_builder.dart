@@ -13,6 +13,7 @@ enum FormFieldType {
   name,
   phone,
   activityClass,
+  licensePlate,
 }
 
 extension FormFieldTypeExtension on FormFieldType {
@@ -33,7 +34,9 @@ extension FormFieldTypeExtension on FormFieldType {
       case FormFieldType.confirmPassword:
         return 'Xác nhận mật khẩu';
       case FormFieldType.memo:
-        return '';
+        return 'Mô tả';
+      case FormFieldType.licensePlate:
+        return 'Biển số xe';
       default:
         return '';
     }
@@ -43,6 +46,8 @@ extension FormFieldTypeExtension on FormFieldType {
     switch (this) {
       case FormFieldType.email:
         return 'NguyenVanA@gmail.com';
+      case FormFieldType.licensePlate:
+        return '92N1-000000';
       case FormFieldType.username:
         return '';
       default:
@@ -124,8 +129,17 @@ extension FormFieldTypeExtension on FormFieldType {
           FormBuilderValidators.minLength(6, errorText: 'Mật khẩu tối thiểu 8 ký tự'),
         ];
         break;
+
+      case FormFieldType.licensePlate:
+        validators = [
+          FormBuilderValidators.required(errorText: 'Không được để trống biển số xe'),
+        ];
+        break;
       case FormFieldType.memo:
-        validators = [FormBuilderValidators.maxLength(1000, errorText: 'Vượt quá giói hạn số từ')];
+        validators = [
+          FormBuilderValidators.maxLength(1000, errorText: 'Vượt quá giói hạn số từ'),
+          FormBuilderValidators.required(errorText: 'Không được để trống mô tả'),
+        ];
         break;
       default:
         return null;
