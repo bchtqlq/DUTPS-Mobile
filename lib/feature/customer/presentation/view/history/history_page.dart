@@ -116,7 +116,7 @@ class HistoryPage extends BaseWidget<HistoryController> {
                               overflow: TextOverflow.clip,
                               style: AppTextStyle.w500s15(ColorName.black000),
                             ),
-                            const SizedBox(width: 16),
+                             const SizedBox(width: 16),
                           ],
                         ),
                         const SizedBox(width: 8),
