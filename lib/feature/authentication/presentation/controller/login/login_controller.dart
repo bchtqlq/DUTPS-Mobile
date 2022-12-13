@@ -1,22 +1,31 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dio/dio.dart';
+import 'package:dut_packing_system/feature/authentication/data/providers/remote/request/username_password_request.dart';
+import 'package:dut_packing_system/feature/customer/data/models/customer_model.dart';
+import 'package:dut_packing_system/feature/customer/domain/usecases/get_customer_info_usecase.dart';
+import 'package:dut_packing_system/utils/config/app_navigation.dart';
 import 'package:dut_packing_system/utils/extension/form_builder.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:get/get.dart';
 
 import '../../../../../base/presentation/base_controller.dart';
-import '../../../../../utils/config/app_navigation.dart';
+import '../../../../../utils/services/storage_service.dart';
+import '../../../domain/usecases/login_usecase.dart';
 
 class LoginController extends BaseController {
-  // LoginController(this._loginWithEmailUseCase);
+  LoginController(this._loginUsecase, this._storageService, this._getCustomerInfoUsecase);
 
-  // final LoginWithEmailUseCase _loginWithEmailUseCase;
+  final LoginUsecase _loginUsecase;
+  final StorageService _storageService;
+  final GetCustomerInfoUsecase _getCustomerInfoUsecase;
 
-  final phoneTextEditingController = TextEditingController();
+  final usernameTextEditingController = TextEditingController();
   final passwordTextEditingController = TextEditingController();
   final formKey = GlobalKey<FormBuilderState>();
   final loginState = BaseState();
 
-  String get _phone => phoneTextEditingController.text;
+  String get _username => usernameTextEditingController.text;
   String get _password => passwordTextEditingController.text;
 
   final isDisableButton = true.obs;
@@ -25,8 +34,22 @@ class LoginController extends BaseController {
   final isShowPassword = true.obs;
 
   @override
+  void onInit() {
+    super.onInit();
+    if (kDebugMode) {
+      // test user
+      usernameTextEditingController.text = 'quylt123';
+      passwordTextEditingController.text = '123123';
+
+      // test staff
+      usernameTextEditingController.text = 'admin';
+      passwordTextEditingController.text = 'Pa\$\$w0rd';
+    }
+  }
+
+  @override
   void onClose() {
-    phoneTextEditingController.dispose();
+    usernameTextEditingController.dispose();
     passwordTextEditingController.dispose();
     super.onClose();
   }
@@ -40,13 +63,13 @@ class LoginController extends BaseController {
   }
 
   void updateLoginButtonState() {
-    isDisableButton.value = _phone.isEmpty || _password.isEmpty;
+    isDisableButton.value = _username.isEmpty || _password.isEmpty;
   }
 
-  void onTapLogin() {
+  void onTapLogin(BuildContext context) {
     try {
       final fbs = formKey.formBuilderState!;
-      final phoneField = FormFieldType.phone.field(fbs);
+      final phoneField = FormFieldType.username.field(fbs);
       final passwordField = FormFieldType.password.field(fbs);
       [
         phoneField,
@@ -54,52 +77,67 @@ class LoginController extends BaseController {
       ].validateFormFields();
 
       if (loginState.isLoading) return;
+      _loginUsecase.execute(
+        observer: Observer(
+          onSubscribe: () {
+            loginState.onLoading();
+            ignoringPointer.value = true;
+            hideErrorMessage();
+          },
+          onSuccess: (account) {
+            ignoringPointer.value = false;
 
-      //   _loginWithEmailUseCase.execute(
-      //     observer: Observer(
-      //       onSubscribe: () {
-      //         loginState.onLoading();
-      //         ignoringPointer.value = true;
-      //         hideErrorMessage();
-      //       },
-      //       onSuccess: (_) {
-      //         loginState.onSuccess();
-      //         N.toPatientList();
-      //       },
-      //       onError: (AppException e) {
-      //         final fieldErrors = e.errorResponse?.errors;
-
-      //         // Handle toast message
-      //         if (fieldErrors == null || fieldErrors.isEmpty) {
-      //           return _showToastMessage(e.message);
-      //         }
-
-      //         // Handle field message
-      //         for (final fieldError in fieldErrors) {
-      //           final fieldName = fieldError.field;
-      //           if (fieldName == null) {
-      //             return _showToastMessage(e.message);
-      //           }
-
-      //           final formFieldType = FormFieldType.values.byName(fieldName);
-      //           switch (formFieldType) {
-      //             case FormFieldType.email:
-      //               emailField.invalidate(fieldError.message ?? S.current.messagesEmailError);
-      //               break;
-      //             case FormFieldType.password:
-      //               passwordField.invalidate(fieldError.message ?? S.current.messagesPasswordError);
-      //               break;
-      //             default:
-      //           }
-      //           return _showToastMessage('');
-      //         }
-      //       },
-      //     ),
-      //     input: EmailPasswordRequest(
-      //       _email.trim(),
-      //       _password.trim(),
-      //     ),
-      //   );
+            _storageService.setToken(account.toJson().toString());
+            if (account.roleId == 30) {
+              _getCustomerInfoUsecase.execute(
+                observer: Observer(
+                  onSubscribe: () {},
+                  onSuccess: (customer) async {
+                    print(customer.toJson());
+                    await _storageService.setCustomer(customer.toJson().toString());
+                    if (customer.name != null &&
+                        customer.gender != null &&
+                        customer.birthday != null &&
+                        customer.phoneNumber != null &&
+                        customer.activityClass != null &&
+                        customer.facultyId != null) {
+                      N.toHome();
+                    } else {
+                      N.toProfile();
+                    }
+                  },
+                  onError: (e) async {
+                    if (e is DioError) {
+                      _showToastMessage(e.message);
+                    }
+                    if (kDebugMode) {
+                      print(e.toString());
+                    }
+                    ignoringPointer.value = false;
+                    loginState.onSuccess();
+                  },
+                ),
+              );
+            } else {
+              N.toStaffPage();
+            }
+          },
+          onError: (e) {
+            if (e is DioError) {
+              _showToastMessage(e.message);
+            }
+            if (kDebugMode) {
+              print(e.toString());
+            }
+            ignoringPointer.value = false;
+            loginState.onSuccess();
+          },
+        ),
+        input: UsernamePasswordRequest(
+          _username.trim(),
+          _password.trim(),
+        ),
+      );
     } on Exception catch (e) {
       isDisableButton.value = true;
     }

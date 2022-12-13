@@ -33,4 +33,28 @@ class N {
   static void toChatHome({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.chatHome);
   }
+
+  static void toStaffPage({RouteType type = RouteType.offAll}) {
+    type.navigate(name: AppRoute.staffPage);
+  }
+
+  static void toProfile({RouteType type = RouteType.offAll, bool isLogged = false}) {
+    type.navigate(name: AppRoute.profile, arguments: isLogged);
+  }
+
+  static void toHome({RouteType type = RouteType.offAll}) {
+    type.navigate(name: AppRoute.home);
+  }
+
+  static void toAddvehical({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.addVehical);
+  }
+
+  static void toSetting({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.setting);
+  }
+
+   static void toHistory({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.history);
+  }
 }

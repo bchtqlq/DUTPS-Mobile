@@ -41,9 +41,9 @@ class LoginPage extends GetView<LoginController> {
                           const SizedBox(height: 20),
                           CommonTextField(
                             formKey: controller.formKey,
-                            type: FormFieldType.phone,
+                            type: FormFieldType.username,
                             maxLength: 13,
-                            controller: controller.phoneTextEditingController,
+                            controller: controller.usernameTextEditingController,
                             onTap: controller.hideErrorMessage,
                             onChanged: (_) {
                               controller.updateLoginButtonState();
@@ -66,7 +66,7 @@ class LoginPage extends GetView<LoginController> {
                               controller.updateLoginButtonState();
                             },
                             onSubmitted: (_) {
-                              controller.onTapLogin();
+                              controller.onTapLogin(context);
                             },
                           ),
                         ],
@@ -90,7 +90,7 @@ class LoginPage extends GetView<LoginController> {
                   Obx(
                     () => CommonBottomButton(
                       text: 'Đăng nhập',
-                      onPressed: controller.onTapLogin,
+                      onPressed: () => controller.onTapLogin(context),
                       pressedOpacity:
                           controller.isDisableButton.value ? 1 : 0.4,
                       fillColor: controller.isDisableButton.value

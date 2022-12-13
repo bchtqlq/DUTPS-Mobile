@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:get/route_manager.dart';
@@ -53,9 +54,9 @@ Widget commonCloseButton({void Function()? onPressed}) {
 }
 
 @swidget
-Widget loadingWidget() {
-  return const Center(
-    child: CupertinoActivityIndicator(color: ColorName.black000),
+Widget loadingWidget({Color? color}) {
+  return Center(
+    child: CupertinoActivityIndicator(color: color ?? ColorName.black000),
   );
 }
 
@@ -79,6 +80,96 @@ Widget errorDialog({
         child: const Text('OK'),
       ),
     ],
+  );
+}
+
+@swidget
+Widget commonDateTimePicker({
+  required String title,
+  String? value,
+  void Function()? onPressed,
+  double height = 50,
+  required BuildContext context,
+  required Function(DateTime, String) callback,
+}) {
+  return CupertinoButton(
+    padding: EdgeInsets.zero,
+    onPressed: () {
+      onPressed?.call();
+      DatePicker.showDatePicker(
+        context,
+        showTitleActions: true,
+        minTime: DateTime(1900, 1, 1),
+        maxTime: DateTime(2100, 1, 1),
+        onChanged: (date) {},
+        onConfirm: (birthday) {
+          var date =
+              "${birthday.year.toString()}-${birthday.month.toString().padLeft(2, '0')}-${birthday.day.toString().padLeft(2, '0')}";
+          callback(birthday, date);
+        },
+        currentTime: DateTime.now(),
+        locale: LocaleType.vi,
+      );
+    },
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 22),
+      height: height,
+      decoration: BoxDecoration(
+        color: value != null ? ColorName.whiteFff : ColorName.grayF8f,
+        border: Border.all(color: ColorName.gray838, width: 0.5),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(width: 13),
+          Text(
+            value ?? title,
+            style: AppTextStyle.w400s12(value != null ? ColorName.black000 : ColorName.gray838),
+          ),
+          const Spacer(),
+          const Icon(Icons.calendar_month_outlined, color: ColorName.gray838),
+          const SizedBox(width: 13),
+        ],
+      ),
+    ),
+  );
+}
+
+@swidget
+Widget commonDropDown({
+  required String title,
+  String? value,
+  void Function()? onPressed,
+  double height = 50,
+}) {
+  return CupertinoButton(
+    padding: EdgeInsets.zero,
+    onPressed: onPressed,
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 22),
+      height: height,
+      decoration: BoxDecoration(
+        color: value != null ? ColorName.whiteFff : ColorName.grayF8f,
+        border: Border.all(color: ColorName.gray838, width: 0.5),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(width: 13),
+          Text(
+            value ?? title,
+            style: AppTextStyle.w400s12(value != null ? ColorName.black000 : ColorName.gray838),
+          ),
+          const Spacer(),
+          const Icon(Icons.keyboard_arrow_down, color: ColorName.black000),
+          const SizedBox(width: 13),
+        ],
+      ),
+    ),
   );
 }
 
@@ -133,39 +224,32 @@ Widget commonTextField(
                 errorMaxLines: 2,
                 isDense: true,
                 labelText: type.labelText,
-                labelStyle:
-                    const TextStyle(fontSize: 11, color: ColorName.gray838),
+                labelStyle: const TextStyle(fontSize: 11, color: ColorName.gray838),
                 alignLabelWithHint: true,
                 filled: true,
                 fillColor: hasFocus ? ColorName.whiteFff : ColorName.grayF8f,
                 hintText: type.hintText,
                 hintStyle: AppTextStyle.w400s13(ColorName.grayC7c),
                 errorStyle: AppTextStyle.w400s13(ColorName.redFf3, height: 0.7),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 13, vertical: 16),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 13, vertical: 16),
                 enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.gray838, width: 0.5),
+                  borderSide: const BorderSide(color: ColorName.gray838, width: 0.5),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.primaryColor, width: 1),
+                  borderSide: const BorderSide(color: ColorName.primaryColor, width: 1),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.redFf3, width: 1),
+                  borderSide: const BorderSide(color: ColorName.redFf3, width: 1),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 errorBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.redFf3, width: 1),
+                  borderSide: const BorderSide(color: ColorName.redFf3, width: 1),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 border: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: ColorName.gray838, width: 0.5),
+                  borderSide: const BorderSide(color: ColorName.gray838, width: 0.5),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 suffixIcon: suffixIcon == null
@@ -178,40 +262,36 @@ Widget commonTextField(
                       ),
               ),
               validator: type.validator(),
-              onTap:
-                  formKey?.formBuilderState == null || type.validator() == null
-                      ? null
-                      : () {
-                          final text = ctl.text;
-                          final field = type.field(formKey!.formBuilderState!);
-                          if (type.validator() != null) {
-                            field.validate();
-                            field.reset();
-                            ctl.value = ctl.value.copyWith(
-                              text: text,
-                              selection:
-                                  TextSelection.collapsed(offset: text.length),
-                            );
-                          }
-                          onTap?.call();
-                        },
-              onChanged:
-                  formKey?.formBuilderState == null || type.validator() == null
-                      ? null
-                      : (v) {
-                          final text = ctl.text;
-                          final field = type.field(formKey!.formBuilderState!);
-                          if (type.validator() != null && field.hasError) {
-                            field.validate();
-                            field.reset();
-                            ctl.value = ctl.value.copyWith(
-                              text: text,
-                              selection:
-                                  TextSelection.collapsed(offset: text.length),
-                            );
-                          }
-                          onChanged?.call(v);
-                        },
+              onTap: formKey?.formBuilderState == null || type.validator() == null
+                  ? null
+                  : () {
+                      final text = ctl.text;
+                      final field = type.field(formKey!.formBuilderState!);
+                      if (type.validator() != null) {
+                        field.validate();
+                        field.reset();
+                        ctl.value = ctl.value.copyWith(
+                          text: text,
+                          selection: TextSelection.collapsed(offset: text.length),
+                        );
+                      }
+                      onTap?.call();
+                    },
+              onChanged: formKey?.formBuilderState == null || type.validator() == null
+                  ? null
+                  : (v) {
+                      final text = ctl.text;
+                      final field = type.field(formKey!.formBuilderState!);
+                      if (type.validator() != null && field.hasError) {
+                        field.validate();
+                        field.reset();
+                        ctl.value = ctl.value.copyWith(
+                          text: text,
+                          selection: TextSelection.collapsed(offset: text.length),
+                        );
+                      }
+                      onChanged?.call(v);
+                    },
               onSubmitted: onSubmitted ??
                   (_) {
                     FocusScope.of(context).nextFocus();

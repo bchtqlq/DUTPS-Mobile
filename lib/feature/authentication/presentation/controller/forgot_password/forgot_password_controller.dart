@@ -35,7 +35,7 @@ class ForgotPasswordController extends BaseController {
   void onTapForgotPassword() {
     try {
       final fbs = formKey.formBuilderState!;
-      final phoneField = FormFieldType.phone.field(fbs);
+      final phoneField = FormFieldType.username.field(fbs);
       [
         phoneField,
       ].validateFormFields();
